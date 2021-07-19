@@ -1,0 +1,17 @@
+version: '3.6'
+services:
+  mongomotors:
+    image: 'mongo'
+    container_name: 'mongomotors'
+    environment: 
+      - MONGO_INITDB_DATABASE=crawler
+      - MONGO_INITDB_USERNAME=root
+      - MONGO_INITDB_PASSWORD=rootteste
+    volumes: 
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - webmotors_data:/data/db
+    ports:
+      - 27017:27017
+volumes:
+  webmotors_data:
+    external: false
