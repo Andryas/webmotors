@@ -21,9 +21,7 @@ NEWSPIDER_MODULE = 'scraping.spiders'
 ROBOTSTXT_OBEY = True
 
 MONGO_DATA_RAW_COLLECTION = config('MONGO_DATA_RAW_COLLECTION', default = 'raw')
-
 MONGO_URI = config('MONGO_URI', default='mongodb://root:rootteste@localhost:27017/?authSource=crawler&readPreference=primary&appname=mongodb-vscode%200.6.0&ssl=false')
-
 MONGO_DATABASE = config('MONGO_DATABASE', default='crawler')
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)

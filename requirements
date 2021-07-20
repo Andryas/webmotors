@@ -1,3 +1,4 @@
 scrapy
-python-decouple
 pymongo
+python-dotenv
+python-decouple

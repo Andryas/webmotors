@@ -12,6 +12,17 @@ services:
       - webmotors_data:/data/db
     ports:
       - 27017:27017
+  # mysqlmotors:
+  #   image:  'mysql:8.0'
+  #   container_name: 'mysqlmotors'
+  #   environment: 
+  #     - 
+  #   volumes:
+  #     - webmotors_sql:/data/db
+  #   ports:
+
 volumes:
   webmotors_data:
+    external: false
+  webmotors_sql:
     external: false

@@ -31,5 +31,6 @@ class ScrapingPipeline(object):
     def process_item(self, item, spider):
         item['timestamp'] = datetime.now(timezone.utc).isoformat()
         item['spider_name'] = self.nome_template
+        item['status'] = 0
         self.db[self.MONGO_DATA_RAW_COLLECTION].insert_one(dict(item))
         return item
