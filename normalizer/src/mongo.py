@@ -16,11 +16,11 @@ class mongo():
             self.conn = self.conn[DATABASE_MONGO]
         return self.conn
 
-    def find(self, collection, **kwargs):
-        return(list(self.conn[collection].find(**kwargs)))
+    def find(self, collection, query = None, fields = None, **kwargs):
+        return(list(self.conn[collection].find(query, fields, **kwargs)))
 
-    def insert_one(self, collection, **kwargs):
-        return(list(self.conn[collection].insert_one(**kwargs)))
+    # def insert_one(self, collection, **kwargs):
+    #     return(list(self.conn[collection].insert_one(**kwargs)))
 
     # TODO: update one
     # def update_one(self, collection, **kwargs):

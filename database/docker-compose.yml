@@ -12,14 +12,20 @@ services:
       - webmotors_data:/data/db
     ports:
       - 27017:27017
-  # mysqlmotors:
-  #   image:  'mysql:8.0'
-  #   container_name: 'mysqlmotors'
-  #   environment: 
-  #     - 
-  #   volumes:
-  #     - webmotors_sql:/data/db
-  #   ports:
+  mysqlmotors:
+    image: mysql:8.0
+    container_name: 'mysqlmotors'
+    environment:
+      MYSQL_DATABASE: 'crawler'
+      MYSQL_ROOT_USER: 'root'
+      MYSQL_ROOT_PASSWORD: 'rootteste'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - ./init.sql:/data/application/init.sql
+      - webmotors_sql:/var/lib/mysql
 
 volumes:
   webmotors_data:
