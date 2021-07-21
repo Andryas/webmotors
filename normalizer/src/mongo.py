@@ -19,9 +19,8 @@ class mongo():
     def find(self, collection, query = None, fields = None, **kwargs):
         return(list(self.conn[collection].find(query, fields, **kwargs)))
 
-    # def insert_one(self, collection, **kwargs):
-    #     return(list(self.conn[collection].insert_one(**kwargs)))
+    def insert_one(self, collection, **kwargs):
+        return(list(self.conn[collection].insert_one(**kwargs)))
 
-    # TODO: update one
-    # def update_one(self, collection, **kwargs):
-    #     return(list(self.conn[collection].insert_one(**kwargs)))
+    def update_one(self, collection, query, update):
+        return(list(self.conn[collection].update_one(query, update)))

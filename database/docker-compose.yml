@@ -9,9 +9,11 @@ services:
       - MONGO_INITDB_PASSWORD=rootteste
     volumes: 
       - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
-      - webmotors_data:/data/db
+      - mongodb_webmotors_data:/data/db
     ports:
       - 27017:27017
+    expose:
+      - '27017'
   mysqlmotors:
     image: mysql:8.0
     container_name: 'mysqlmotors'
@@ -24,11 +26,11 @@ services:
     expose:
       - '3306'
     volumes:
-      - ./init.sql:/data/application/init.sql
-      - webmotors_sql:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/mysql-init.sql
+      - mysql_webmotors_data:/var/lib/mysql
 
 volumes:
-  webmotors_data:
-    external: false
-  webmotors_sql:
-    external: false
+  mongodb_webmotors_data:
+    external: true
+  mysql_webmotors_data:
+    external: true

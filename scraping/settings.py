@@ -6,7 +6,6 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-from decouple import config
 
 BOT_NAME = 'scraping'
 
@@ -20,9 +19,9 @@ NEWSPIDER_MODULE = 'scraping.spiders'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 
-MONGO_DATA_RAW_COLLECTION = config('MONGO_DATA_RAW_COLLECTION', default = 'raw')
-MONGO_URI = config('MONGO_URI', default='mongodb://root:rootteste@localhost:27017/?authSource=crawler&readPreference=primary&appname=mongodb-vscode%200.6.0&ssl=false')
-MONGO_DATABASE = config('MONGO_DATABASE', default='crawler')
+MONGO_DATA_RAW_COLLECTION = 'raw'
+MONGO_URI = 'mongodb://root:rootteste@localhost:27017/?authSource=crawler&readPreference=primary&appname=mongodb-vscode%200.6.0&ssl=false'
+MONGO_DATABASE = 'crawler'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
