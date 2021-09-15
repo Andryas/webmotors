@@ -23,4 +23,4 @@ class mongo():
         return(list(self.conn[collection].insert_one(**kwargs)))
 
     def update_one(self, collection, query, update):
-        return(list(self.conn[collection].update_one(query, update)))
+        self.conn[collection].update_one(query, update)
