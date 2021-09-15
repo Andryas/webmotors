@@ -1,0 +1,140 @@
+---
+title: "Exemplo"
+output: flexdashboard::flex_dashboard
+---
+
+```{r, echo = FALSE, message = FALSE}
+library(knitr)
+
+opts_chunk$set(
+    message = FALSE,
+    warning = FALSE,
+    cache = TRUE,
+    echo = FALSE,
+    fig.align = "center"
+)
+```
+
+```{r libs}
+library(tidyverse)
+library(DBI)
+library(RMariaDB)
+```
+
+```{r data}
+con <- dbConnect(
+    MariaDB(),
+    user = "root",
+    password = "rootteste",
+    host = "127.0.0.1",
+    dbname = "crawler"
+)
+data <- dbReadTable(con, "warm")
+dbDisconnect(con)
+data <- as_tibble(data)
+data <- data %>%
+    filter(price <= quantile(data$price, 0.999))
+```
+
+```{r extra_funs}
+format_num <- function(x = NULL, smbl = "", signif = 1)
+{
+    humanity <- function(y) {
+        if (is.infinite(y)) {
+            return(y)
+        }
+        else if (!is.na(y)) {
+            tn <- round(abs(y)/1000000000000, signif)
+            b <- round(abs(y)/1000000000, signif)
+            m <- round(abs(y)/1000000, signif)
+            k <- round(abs(y)/1000, signif)
+            if (y >= 0) {
+                y_is_positive <- ""
+            }
+            else {
+                y_is_positive <- "-"
+            }
+            if (k < 1) {
+                paste0(y_is_positive, smbl, round(abs(y), signif))
+            }
+            else if (m < 1) {
+                paste0(y_is_positive, smbl, k, "k")
+            }
+            else if (b < 1) {
+                paste0(y_is_positive, smbl, m, "m")
+            }
+            else if (tn < 1) {
+                paste0(y_is_positive, smbl, b, "bn")
+            }
+            else {
+                paste0(y_is_positive, smbl, scales::comma(tn), 
+                  "tn")
+            }
+        }
+        else if (is.na(y) | is.null(y)) {
+            return("-")
+        }
+    }
+    sapply(x, humanity)
+}
+```
+
+Column
+-------------------------------------
+
+### Média dos modelos mais caros por marca
+    
+```{r}
+data %>%
+    group_by(spec_make, spec_model) %>%
+    summarise(
+        min_price = min(price),
+        avg_price = mean(price),
+        max_price = max(price)
+    ) %>%
+    group_by(spec_make) %>%
+    filter(avg_price == max(avg_price)) %>%
+    ungroup() %>%
+    # arrange(desc(avg_price))
+    mutate(spec_make = str_c(spec_make, " - ", spec_model)) %>%
+    ggplot(aes(x = reorder(spec_make, avg_price), y = avg_price)) +
+    geom_col() +
+    # geom_point() +
+    # geom_errorbar(aes(ymin = min_price, ymax = max_price)) +
+    coord_flip() +
+    theme_minimal() +
+    ylab("Preço médio") +
+    xlab("Marcas - Modelo") +
+    scale_y_continuous(labels = format_num) +
+    theme(text = element_text(size = 5))
+```
+    
+Column
+-------------------------------------
+
+### Média dos modelos mais baratos por marca
+
+```{r}
+data %>%
+    group_by(spec_make, spec_model) %>%
+    summarise(
+        min_price = min(price),
+        avg_price = mean(price),
+        max_price = max(price)
+    ) %>%
+    group_by(spec_make) %>%
+    filter(avg_price == min(avg_price)) %>%
+    ungroup() %>%
+    # arrange(desc(avg_price))
+    mutate(spec_make = str_c(spec_make, " - ", spec_model)) %>%
+    ggplot(aes(x = reorder(spec_make, avg_price), y = avg_price)) +
+    geom_col() +
+    # geom_point() +
+    # geom_errorbar(aes(ymin = min_price, ymax = max_price)) +
+    coord_flip() +
+    theme_minimal() +
+    ylab("Preço médio") +
+    xlab("Marcas - Modelo") +
+    scale_y_continuous(labels = format_num) +
+    theme(text = element_text(size = 5))
+```

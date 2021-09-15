@@ -1,2 +1,4 @@
 __init__py
 __pycache__
+*/*_cache
+*/*_files
